@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:wat_schedule/core/constants/pathes.dart';
 import 'package:wat_schedule/core/network/error/handler.dart';
 
 abstract class DioFactory with ErrorHandling {
