@@ -1,1 +1,30 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.gr.dart"
+    - "lib/injection/injection.config.dart"
+    
+  errors:
+    missing_required_param: warning
+    missing_return: warning
+    
+linter:
+  rules:
+    constant_identifier_names: false
+    always_put_control_body_on_new_line: false
+    curly_braces_in_flow_control_structures: false
+
+    prefer_const_constructors: true              
+    prefer_const_literals_to_create_immutables: true 
+    prefer_final_locals: true                    
+    avoid_print: true                            
+    avoid_unnecessary_containers: true           
+    sort_child_properties_last: true             
+    use_key_in_widget_constructors: true         
+    sized_box_for_whitespace: true               
+    prefer_single_quotes: true                   
+    unnecessary_this: true                       
+    no_logic_in_create_state: true               
+    always_use_package_imports: true 

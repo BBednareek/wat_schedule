@@ -30,6 +30,8 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   dartz: ^0.10.1
 
+  cloud_firestore: ^5.6.9
+
   flutter:
     sdk: flutter
 

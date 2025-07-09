@@ -32,44 +32,44 @@ class Failure extends Equatable {
     if (e is UnprocessableException) {
       return const Failure(
         type: FailureType.unprocessable,
-        errorCode: "unprocessable",
-        message: "unprocessable",
+        errorCode: 'unprocessable',
+        message: 'unprocessable',
       );
     } else if (e is ConflictException) {
       return const Failure(
         type: FailureType.conflict,
-        errorCode: "conflict",
-        message: "conflict",
+        errorCode: 'conflict',
+        message: 'conflict',
       );
     } else if (e is NotFoundException) {
       return const Failure(
         type: FailureType.notFound,
-        errorCode: "Not found",
-        message: "Not found",
+        errorCode: 'Not found',
+        message: 'Not found',
       );
     } else if (e is ForbiddenException) {
       return const Failure(
         type: FailureType.forbidden,
-        errorCode: "forbidden",
-        message: "forbidden",
+        errorCode: 'forbidden',
+        message: 'forbidden',
       );
     } else if (e is ServerException) {
       return const Failure(
         type: FailureType.server,
-        errorCode: "Server exception",
-        message: "Server exception",
+        errorCode: 'Server exception',
+        message: 'Server exception',
       );
     } else if (e is NoInternetConnectionException || e is SocketException) {
       return const Failure(
         type: FailureType.noInternet,
-        errorCode: "No internet connection",
-        message: "No internet connection",
+        errorCode: 'No internet connection',
+        message: 'No internet connection',
       );
     } else if (e is TooManyRequestsException) {
       return const Failure(
         type: FailureType.tooManyRequests,
-        errorCode: "Too many requests",
-        message: "Too many requests",
+        errorCode: 'Too many requests',
+        message: 'Too many requests',
       );
     } else if (e is ServerException) {
       return Failure(
@@ -77,8 +77,8 @@ class Failure extends Equatable {
     }
     return const Failure(
       type: FailureType.unknown,
-      errorCode: "unknown failure",
-      message: "unknown failure",
+      errorCode: 'unknown failure',
+      message: 'unknown failure',
     );
   }
 

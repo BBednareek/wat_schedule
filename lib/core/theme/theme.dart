@@ -13,8 +13,6 @@ ThemeData darkTheme = ThemeData(
     onError: ProjectColors.onErorr,
     onPrimary: ProjectColors.darkTxt,
     onSecondary: ProjectColors.darkTxt,
-    background: ProjectColors.darkBackground,
-    onBackground: ProjectColors.darkTxt,
     surface: ProjectColors.darkContainer,
     onSurface: ProjectColors.darkTxt,
   ),
@@ -69,8 +67,6 @@ ThemeData lightTheme = ThemeData(
       onError: ProjectColors.success,
       onPrimary: ProjectColors.lightTxt,
       onSecondary: ProjectColors.darkTxt,
-      background: ProjectColors.lightBackground,
-      onBackground: ProjectColors.lightTxt,
       surface: ProjectColors.transparent,
       onSurface: ProjectColors.darkTxt),
   elevatedButtonTheme: ElevatedButtonThemeData(

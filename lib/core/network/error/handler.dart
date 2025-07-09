@@ -42,7 +42,7 @@ mixin ErrorHandling {
       case HttpStatus.tooManyRequests:
         return TooManyRequestsException();
       case HttpStatus.internalServerError:
-        return const ServerException(message: "Server not responding");
+        return const ServerException(message: 'Server not responding');
       case HttpStatus.unauthorized:
         return AuthException();
     }
@@ -58,7 +58,7 @@ mixin ErrorHandling {
           return NoInternetConnectionException();
         }
       case DioExceptionType.receiveTimeout:
-        return const ServerException(message: "Server not responding");
+        return const ServerException(message: 'Server not responding');
       case DioExceptionType.badCertificate:
       case DioExceptionType.badResponse:
       case DioExceptionType.cancel:
@@ -71,7 +71,7 @@ mixin ErrorHandling {
           if (response != null) {
             return responseException(response);
           }
-          return const ServerException(message: "App not responding");
+          return const ServerException(message: 'App not responding');
         }
     }
   }

@@ -5,7 +5,7 @@ class ServerException implements Exception {
   const ServerException({required this.message});
 
   factory ServerException.withErrorCode(Map<String, dynamic> data) =>
-      const ServerException(message: "Server not responding");
+      const ServerException(message: 'Server not responding');
 }
 
 class UnprocessableException implements Exception {
@@ -14,7 +14,7 @@ class UnprocessableException implements Exception {
   UnprocessableException({required this.message});
 
   factory UnprocessableException.withErrorCode(Map<String, dynamic> data) =>
-      UnprocessableException(message: "Unprocessable error");
+      UnprocessableException(message: 'Unprocessable error');
 }
 
 class ForbiddenException implements Exception {
@@ -23,7 +23,7 @@ class ForbiddenException implements Exception {
   ForbiddenException({required this.message});
 
   factory ForbiddenException.withErrorCode(Map<String, dynamic> data) =>
-      ForbiddenException(message: "Forbidden error");
+      ForbiddenException(message: 'Forbidden error');
 }
 
 class ConflictException implements Exception {
@@ -32,7 +32,7 @@ class ConflictException implements Exception {
   ConflictException({required this.message});
 
   factory ConflictException.withErrorCode(Map<String, dynamic> data) =>
-      ConflictException(message: "Conflict error");
+      ConflictException(message: 'Conflict error');
 }
 
 class NotFoundException implements Exception {
@@ -41,7 +41,7 @@ class NotFoundException implements Exception {
   NotFoundException({required this.message});
 
   factory NotFoundException.withErrorCode(dynamic data) =>
-      NotFoundException(message: "Not found error");
+      NotFoundException(message: 'Not found error');
 }
 
 class InternalServerException implements Exception {
