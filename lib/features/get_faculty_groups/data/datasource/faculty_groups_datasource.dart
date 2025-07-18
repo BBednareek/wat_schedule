@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:wat_schedule/core/constants/pathes.dart';
 import 'package:wat_schedule/core/network/factory/dio_factory.dart';
-import 'package:wat_schedule/features/faculty_groups/domain/entity/faculty_groups_entity.dart';
+import 'package:wat_schedule/features/get_faculty_groups/domain/entity/faculty_groups_entity.dart';
 
 abstract class FacultyGroupsRemoteDatasource {
   Future<FacultyGroupsEntity> getFacultyGroups(); 
@@ -15,7 +16,8 @@ class FacultyGroupsRemoteDatasourceImpl implements FacultyGroupsRemoteDatasource
   @override
   Future<FacultyGroupsEntity> getFacultyGroups() async {
     try {
-      return FacultyGroupsEntity(group: '');
+      final Map<String, dynamic> result = await dioFactory.get(Pathes.getFacultyGroups);
+      return FacultyGroupsEntity.fromJson(result);
     } catch (e, st) {
       throw dioFactory.handleException(e, stackTrace: st);
     }
