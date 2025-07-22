@@ -1,8 +1,15 @@
 part of 'faculty_groups_bloc.dart';
 
+/// State for faculty groups.
+/// It represents the different states of the faculty groups
+/// such as loading, loaded with data, or error with a message.
 @freezed
 abstract class FacultyGroupsState with _$FacultyGroupsState {
-  const factory FacultyGroupsState.loading() = _Loading;
-  const factory FacultyGroupsState.loaded() = _Loaded;
-  const factory FacultyGroupsState.error({required String errorMessage}) = _Error;
+  const factory FacultyGroupsState.loading() = LoadingGroups;
+  const factory FacultyGroupsState.loaded(
+      {required FacultyGroupsEntity entity}) = LoadedGroups;
+  const factory FacultyGroupsState.groupSelected({required String groupName}) =
+      GroupSelected;
+  const factory FacultyGroupsState.error({required String errorMessage}) =
+      ErrorGroups;
 }

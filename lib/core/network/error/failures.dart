@@ -18,7 +18,6 @@ enum FailureType {
 
 class Failure extends Equatable {
   final FailureType type;
-
   final String errorCode;
   final String message;
 
@@ -30,56 +29,54 @@ class Failure extends Equatable {
 
   factory Failure.throwable(dynamic e) {
     if (e is UnprocessableException) {
-      return const Failure(
+      return Failure(
         type: FailureType.unprocessable,
         errorCode: 'unprocessable',
-        message: 'unprocessable',
+        message: e.message,
       );
     } else if (e is ConflictException) {
-      return const Failure(
+      return Failure(
         type: FailureType.conflict,
         errorCode: 'conflict',
-        message: 'conflict',
+        message: e.message,
       );
     } else if (e is NotFoundException) {
-      return const Failure(
+      return Failure(
         type: FailureType.notFound,
-        errorCode: 'Not found',
-        message: 'Not found',
+        errorCode: 'not_found',
+        message: e.message,
       );
     } else if (e is ForbiddenException) {
-      return const Failure(
+      return Failure(
         type: FailureType.forbidden,
         errorCode: 'forbidden',
-        message: 'forbidden',
+        message: e.message,
       );
     } else if (e is ServerException) {
-      return const Failure(
+      return Failure(
         type: FailureType.server,
-        errorCode: 'Server exception',
-        message: 'Server exception',
+        errorCode: 'server_exception',
+        message: e.message,
       );
     } else if (e is NoInternetConnectionException || e is SocketException) {
       return const Failure(
         type: FailureType.noInternet,
-        errorCode: 'No internet connection',
+        errorCode: 'no_internet',
         message: 'No internet connection',
       );
     } else if (e is TooManyRequestsException) {
       return const Failure(
         type: FailureType.tooManyRequests,
-        errorCode: 'Too many requests',
+        errorCode: 'too_many_requests',
         message: 'Too many requests',
       );
-    } else if (e is ServerException) {
-      return Failure(
-          type: FailureType.server, errorCode: e.message, message: e.message);
+    } else {
+      return const Failure(
+        type: FailureType.unknown,
+        errorCode: 'unknown_failure',
+        message: 'An unknown error occurred',
+      );
     }
-    return const Failure(
-      type: FailureType.unknown,
-      errorCode: 'unknown failure',
-      message: 'unknown failure',
-    );
   }
 
   @override

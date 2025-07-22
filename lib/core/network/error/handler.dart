@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:wat_schedule/core/network/error/exceptions.dart';
 
-
 mixin ErrorHandling {
   Exception handleException(dynamic error, {StackTrace? stackTrace}) {
     log('''
@@ -14,39 +13,46 @@ mixin ErrorHandling {
     -----------------------------------
     ''');
 
-    switch (error) {
-      case const (TimeoutException):
-        break;
-
-      case const (Response):
-        return responseException(error);
-
-      case const (DioException):
-        return dioException(error);
-      default:
-        return error;
+    if (error is TimeoutException) {
+      return NoInternetConnectionException();
     }
-    return error;
+
+    if (error is DioException) {
+      return dioException(error);
+    }
+
+    if (error is Response) {
+      return responseException(error);
+    }
+
+    return defaultException(error, stackTrace);
   }
 
   Exception responseException(Response response) {
+    final dynamic data = response.data;
+
+    if (data is! Map<String, dynamic>) {
+      return const ServerException(message: 'Unexpected server response');
+    }
+
     switch (response.statusCode) {
       case HttpStatus.forbidden:
-        return ForbiddenException.withErrorCode(response.data);
+        return ForbiddenException.withErrorCode(data);
       case HttpStatus.notFound:
-        return NotFoundException.withErrorCode(response.data);
+        return NotFoundException.withErrorCode(data);
       case HttpStatus.unprocessableEntity:
-        return UnprocessableException.withErrorCode(response.data);
+        return UnprocessableException.withErrorCode(data);
       case HttpStatus.conflict:
-        return ConflictException.withErrorCode(response.data);
+        return ConflictException.withErrorCode(data);
       case HttpStatus.tooManyRequests:
         return TooManyRequestsException();
       case HttpStatus.internalServerError:
-        return const ServerException(message: 'Server not responding');
+        return ServerException.withErrorCode(data);
       case HttpStatus.unauthorized:
         return AuthException();
     }
-    return ServerException.withErrorCode(response.data);
+
+    return ServerException.withErrorCode(data);
   }
 
   Exception dioException(DioException dio) {
@@ -54,25 +60,17 @@ mixin ErrorHandling {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.connectionError:
-        {
-          return NoInternetConnectionException();
-        }
+        return NoInternetConnectionException();
       case DioExceptionType.receiveTimeout:
         return const ServerException(message: 'Server not responding');
-      case DioExceptionType.badCertificate:
       case DioExceptionType.badResponse:
-      case DioExceptionType.cancel:
-      case DioExceptionType.unknown:
-        {
-          if (dio is SocketException || dio is TimeoutException) {
-            return NoInternetConnectionException();
-          }
-          final Response<dynamic>? response = dio.response;
-          if (response != null) {
-            return responseException(response);
-          }
-          return const ServerException(message: 'App not responding');
+        final Response<dynamic>? response = dio.response;
+        if (response != null) {
+          return responseException(response);
         }
+        return const ServerException(message: 'Bad server response');
+      default:
+        return defaultException(dio, dio.stackTrace);
     }
   }
 
@@ -80,6 +78,7 @@ mixin ErrorHandling {
     if (error is SocketException || error is TimeoutException) {
       return NoInternetConnectionException();
     }
+
     log('''
     ------------------------------------------------------
 
@@ -90,6 +89,6 @@ mixin ErrorHandling {
     ------------------------------------------------------
     ''');
 
-    return error;
+    return const ServerException(message: 'Unknown application error');
   }
 }

@@ -2,6 +2,10 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 
+/// Custom BlocObserver to log Bloc lifecycle events.
+/// This observer logs the creation, state changes, errors, and closure of Blocs.
+/// It extends [BlocObserver] and overrides its methods to provide custom logging.
+/// It is useful for debugging and monitoring the behavior of Blocs in the application.
 class ProjectBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {

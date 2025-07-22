@@ -18,6 +18,12 @@ import 'package:wat_schedule/features/get_faculty_groups/data/repository/faculty
     as _i112;
 import 'package:wat_schedule/features/get_faculty_groups/domain/usecase/faculty_groups_usecase.dart'
     as _i741;
+import 'package:wat_schedule/features/get_weekly_schedule/data/datasource/get_weekly_schedule_datasource.dart'
+    as _i548;
+import 'package:wat_schedule/features/get_weekly_schedule/data/repository/get_weekly_schedule_repository.dart'
+    as _i905;
+import 'package:wat_schedule/features/get_weekly_schedule/domain/usecases/get_weekly_schedule_usecase.dart'
+    as _i762;
 import 'package:wat_schedule/features/theme_cubit/presentation/theme_cubit.dart'
     as _i454;
 
@@ -34,13 +40,23 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i454.ThemeCubit>(() => _i454.ThemeCubit());
     gh.lazySingleton<_i272.DioFactory>(() => _i272.DioFactoryImpl());
+    gh.lazySingleton<_i548.GetWeeklyScheduleDatasource>(
+        () => _i548.GetWeeklyScheduleImpl(dioFactory: gh<_i272.DioFactory>()));
     gh.lazySingleton<_i19.FacultyGroupsRemoteDatasource>(() =>
         _i19.FacultyGroupsRemoteDatasourceImpl(
             dioFactory: gh<_i272.DioFactory>()));
+    gh.lazySingleton<_i905.GetWeeklyScheduleRepository>(() =>
+        _i905.GetWeeklyScheduleRepositoryImpl(
+            getWeeklyScheduleDatasource:
+                gh<_i548.GetWeeklyScheduleDatasource>()));
     gh.lazySingleton<_i112.FacultyGroupsRepository>(() =>
         _i112.FacultyGroupsRepositoryImpl(
             facultyGroupsRemoteDatasource:
                 gh<_i19.FacultyGroupsRemoteDatasource>()));
+    gh.lazySingleton<_i762.GetWeeklyScheduleUsecase>(() =>
+        _i762.GetWeeklyScheduleUsecase(
+            getWeeklyScheduleRepository:
+                gh<_i905.GetWeeklyScheduleRepository>()));
     gh.lazySingleton<_i741.FacultyGroupsUsecase>(() =>
         _i741.FacultyGroupsUsecase(
             scheduleRepository: gh<_i112.FacultyGroupsRepository>()));

@@ -52,12 +52,15 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_GetFacultyGroups value)? getFacultyGroups,
+    TResult Function(_SelectGroup value)? selectGroup,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
         return getFacultyGroups(_that);
+      case _SelectGroup() when selectGroup != null:
+        return selectGroup(_that);
       case _:
         return orElse();
     }
@@ -79,11 +82,14 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_GetFacultyGroups value) getFacultyGroups,
+    required TResult Function(_SelectGroup value) selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups():
         return getFacultyGroups(_that);
+      case _SelectGroup():
+        return selectGroup(_that);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -104,11 +110,14 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_GetFacultyGroups value)? getFacultyGroups,
+    TResult? Function(_SelectGroup value)? selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
         return getFacultyGroups(_that);
+      case _SelectGroup() when selectGroup != null:
+        return selectGroup(_that);
       case _:
         return null;
     }
@@ -129,12 +138,15 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getFacultyGroups,
+    TResult Function(String groupName)? selectGroup,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
         return getFacultyGroups();
+      case _SelectGroup() when selectGroup != null:
+        return selectGroup(_that.groupName);
       case _:
         return orElse();
     }
@@ -156,11 +168,14 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getFacultyGroups,
+    required TResult Function(String groupName) selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups():
         return getFacultyGroups();
+      case _SelectGroup():
+        return selectGroup(_that.groupName);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -181,11 +196,14 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getFacultyGroups,
+    TResult? Function(String groupName)? selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
         return getFacultyGroups();
+      case _SelectGroup() when selectGroup != null:
+        return selectGroup(_that.groupName);
       case _:
         return null;
     }
@@ -209,6 +227,70 @@ class _GetFacultyGroups implements FacultyGroupsEvent {
   @override
   String toString() {
     return 'FacultyGroupsEvent.getFacultyGroups()';
+  }
+}
+
+/// @nodoc
+
+class _SelectGroup implements FacultyGroupsEvent {
+  const _SelectGroup({required this.groupName});
+
+  final String groupName;
+
+  /// Create a copy of FacultyGroupsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$SelectGroupCopyWith<_SelectGroup> get copyWith =>
+      __$SelectGroupCopyWithImpl<_SelectGroup>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _SelectGroup &&
+            (identical(other.groupName, groupName) ||
+                other.groupName == groupName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, groupName);
+
+  @override
+  String toString() {
+    return 'FacultyGroupsEvent.selectGroup(groupName: $groupName)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$SelectGroupCopyWith<$Res>
+    implements $FacultyGroupsEventCopyWith<$Res> {
+  factory _$SelectGroupCopyWith(
+          _SelectGroup value, $Res Function(_SelectGroup) _then) =
+      __$SelectGroupCopyWithImpl;
+  @useResult
+  $Res call({String groupName});
+}
+
+/// @nodoc
+class __$SelectGroupCopyWithImpl<$Res> implements _$SelectGroupCopyWith<$Res> {
+  __$SelectGroupCopyWithImpl(this._self, this._then);
+
+  final _SelectGroup _self;
+  final $Res Function(_SelectGroup) _then;
+
+  /// Create a copy of FacultyGroupsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? groupName = null,
+  }) {
+    return _then(_SelectGroup(
+      groupName: null == groupName
+          ? _self.groupName
+          : groupName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
@@ -251,18 +333,21 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(LoadingGroups value)? loading,
+    TResult Function(LoadedGroups value)? loaded,
+    TResult Function(GroupSelected value)? groupSelected,
+    TResult Function(ErrorGroups value)? error,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading() when loading != null:
+      case LoadingGroups() when loading != null:
         return loading(_that);
-      case _Loaded() when loaded != null:
+      case LoadedGroups() when loaded != null:
         return loaded(_that);
-      case _Error() when error != null:
+      case GroupSelected() when groupSelected != null:
+        return groupSelected(_that);
+      case ErrorGroups() when error != null:
         return error(_that);
       case _:
         return orElse();
@@ -284,17 +369,20 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(LoadingGroups value) loading,
+    required TResult Function(LoadedGroups value) loaded,
+    required TResult Function(GroupSelected value) groupSelected,
+    required TResult Function(ErrorGroups value) error,
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading():
+      case LoadingGroups():
         return loading(_that);
-      case _Loaded():
+      case LoadedGroups():
         return loaded(_that);
-      case _Error():
+      case GroupSelected():
+        return groupSelected(_that);
+      case ErrorGroups():
         return error(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -315,17 +403,20 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(LoadingGroups value)? loading,
+    TResult? Function(LoadedGroups value)? loaded,
+    TResult? Function(GroupSelected value)? groupSelected,
+    TResult? Function(ErrorGroups value)? error,
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading() when loading != null:
+      case LoadingGroups() when loading != null:
         return loading(_that);
-      case _Loaded() when loaded != null:
+      case LoadedGroups() when loaded != null:
         return loaded(_that);
-      case _Error() when error != null:
+      case GroupSelected() when groupSelected != null:
+        return groupSelected(_that);
+      case ErrorGroups() when error != null:
         return error(_that);
       case _:
         return null;
@@ -347,17 +438,20 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(FacultyGroupsEntity entity)? loaded,
+    TResult Function(String groupName)? groupSelected,
     TResult Function(String errorMessage)? error,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading() when loading != null:
+      case LoadingGroups() when loading != null:
         return loading();
-      case _Loaded() when loaded != null:
-        return loaded();
-      case _Error() when error != null:
+      case LoadedGroups() when loaded != null:
+        return loaded(_that.entity);
+      case GroupSelected() when groupSelected != null:
+        return groupSelected(_that.groupName);
+      case ErrorGroups() when error != null:
         return error(_that.errorMessage);
       case _:
         return orElse();
@@ -380,16 +474,19 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(FacultyGroupsEntity entity) loaded,
+    required TResult Function(String groupName) groupSelected,
     required TResult Function(String errorMessage) error,
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading():
+      case LoadingGroups():
         return loading();
-      case _Loaded():
-        return loaded();
-      case _Error():
+      case LoadedGroups():
+        return loaded(_that.entity);
+      case GroupSelected():
+        return groupSelected(_that.groupName);
+      case ErrorGroups():
         return error(_that.errorMessage);
       case _:
         throw StateError('Unexpected subclass');
@@ -411,16 +508,19 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function()? loaded,
+    TResult? Function(FacultyGroupsEntity entity)? loaded,
+    TResult? Function(String groupName)? groupSelected,
     TResult? Function(String errorMessage)? error,
   }) {
     final _that = this;
     switch (_that) {
-      case _Loading() when loading != null:
+      case LoadingGroups() when loading != null:
         return loading();
-      case _Loaded() when loaded != null:
-        return loaded();
-      case _Error() when error != null:
+      case LoadedGroups() when loaded != null:
+        return loaded(_that.entity);
+      case GroupSelected() when groupSelected != null:
+        return groupSelected(_that.groupName);
+      case ErrorGroups() when error != null:
         return error(_that.errorMessage);
       case _:
         return null;
@@ -430,13 +530,13 @@ extension FacultyGroupsStatePatterns on FacultyGroupsState {
 
 /// @nodoc
 
-class _Loading implements FacultyGroupsState {
-  const _Loading();
+class LoadingGroups implements FacultyGroupsState {
+  const LoadingGroups();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loading);
+        (other.runtimeType == runtimeType && other is LoadingGroups);
   }
 
   @override
@@ -450,28 +550,148 @@ class _Loading implements FacultyGroupsState {
 
 /// @nodoc
 
-class _Loaded implements FacultyGroupsState {
-  const _Loaded();
+class LoadedGroups implements FacultyGroupsState {
+  const LoadedGroups({required this.entity});
+
+  final FacultyGroupsEntity entity;
+
+  /// Create a copy of FacultyGroupsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $LoadedGroupsCopyWith<LoadedGroups> get copyWith =>
+      _$LoadedGroupsCopyWithImpl<LoadedGroups>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _Loaded);
+        (other.runtimeType == runtimeType &&
+            other is LoadedGroups &&
+            (identical(other.entity, entity) || other.entity == entity));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, entity);
 
   @override
   String toString() {
-    return 'FacultyGroupsState.loaded()';
+    return 'FacultyGroupsState.loaded(entity: $entity)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $LoadedGroupsCopyWith<$Res>
+    implements $FacultyGroupsStateCopyWith<$Res> {
+  factory $LoadedGroupsCopyWith(
+          LoadedGroups value, $Res Function(LoadedGroups) _then) =
+      _$LoadedGroupsCopyWithImpl;
+  @useResult
+  $Res call({FacultyGroupsEntity entity});
+
+  $FacultyGroupsEntityCopyWith<$Res> get entity;
+}
+
+/// @nodoc
+class _$LoadedGroupsCopyWithImpl<$Res> implements $LoadedGroupsCopyWith<$Res> {
+  _$LoadedGroupsCopyWithImpl(this._self, this._then);
+
+  final LoadedGroups _self;
+  final $Res Function(LoadedGroups) _then;
+
+  /// Create a copy of FacultyGroupsState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? entity = null,
+  }) {
+    return _then(LoadedGroups(
+      entity: null == entity
+          ? _self.entity
+          : entity // ignore: cast_nullable_to_non_nullable
+              as FacultyGroupsEntity,
+    ));
+  }
+
+  /// Create a copy of FacultyGroupsState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FacultyGroupsEntityCopyWith<$Res> get entity {
+    return $FacultyGroupsEntityCopyWith<$Res>(_self.entity, (value) {
+      return _then(_self.copyWith(entity: value));
+    });
   }
 }
 
 /// @nodoc
 
-class _Error implements FacultyGroupsState {
-  const _Error({required this.errorMessage});
+class GroupSelected implements FacultyGroupsState {
+  const GroupSelected({required this.groupName});
+
+  final String groupName;
+
+  /// Create a copy of FacultyGroupsState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $GroupSelectedCopyWith<GroupSelected> get copyWith =>
+      _$GroupSelectedCopyWithImpl<GroupSelected>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is GroupSelected &&
+            (identical(other.groupName, groupName) ||
+                other.groupName == groupName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, groupName);
+
+  @override
+  String toString() {
+    return 'FacultyGroupsState.groupSelected(groupName: $groupName)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $GroupSelectedCopyWith<$Res>
+    implements $FacultyGroupsStateCopyWith<$Res> {
+  factory $GroupSelectedCopyWith(
+          GroupSelected value, $Res Function(GroupSelected) _then) =
+      _$GroupSelectedCopyWithImpl;
+  @useResult
+  $Res call({String groupName});
+}
+
+/// @nodoc
+class _$GroupSelectedCopyWithImpl<$Res>
+    implements $GroupSelectedCopyWith<$Res> {
+  _$GroupSelectedCopyWithImpl(this._self, this._then);
+
+  final GroupSelected _self;
+  final $Res Function(GroupSelected) _then;
+
+  /// Create a copy of FacultyGroupsState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? groupName = null,
+  }) {
+    return _then(GroupSelected(
+      groupName: null == groupName
+          ? _self.groupName
+          : groupName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class ErrorGroups implements FacultyGroupsState {
+  const ErrorGroups({required this.errorMessage});
 
   final String errorMessage;
 
@@ -479,14 +699,14 @@ class _Error implements FacultyGroupsState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$ErrorCopyWith<_Error> get copyWith =>
-      __$ErrorCopyWithImpl<_Error>(this, _$identity);
+  $ErrorGroupsCopyWith<ErrorGroups> get copyWith =>
+      _$ErrorGroupsCopyWithImpl<ErrorGroups>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Error &&
+            other is ErrorGroups &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
@@ -501,20 +721,21 @@ class _Error implements FacultyGroupsState {
 }
 
 /// @nodoc
-abstract mixin class _$ErrorCopyWith<$Res>
+abstract mixin class $ErrorGroupsCopyWith<$Res>
     implements $FacultyGroupsStateCopyWith<$Res> {
-  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) =
-      __$ErrorCopyWithImpl;
+  factory $ErrorGroupsCopyWith(
+          ErrorGroups value, $Res Function(ErrorGroups) _then) =
+      _$ErrorGroupsCopyWithImpl;
   @useResult
   $Res call({String errorMessage});
 }
 
 /// @nodoc
-class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
-  __$ErrorCopyWithImpl(this._self, this._then);
+class _$ErrorGroupsCopyWithImpl<$Res> implements $ErrorGroupsCopyWith<$Res> {
+  _$ErrorGroupsCopyWithImpl(this._self, this._then);
 
-  final _Error _self;
-  final $Res Function(_Error) _then;
+  final ErrorGroups _self;
+  final $Res Function(ErrorGroups) _then;
 
   /// Create a copy of FacultyGroupsState
   /// with the given fields replaced by the non-null parameter values.
@@ -522,7 +743,7 @@ class __$ErrorCopyWithImpl<$Res> implements _$ErrorCopyWith<$Res> {
   $Res call({
     Object? errorMessage = null,
   }) {
-    return _then(_Error(
+    return _then(ErrorGroups(
       errorMessage: null == errorMessage
           ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable

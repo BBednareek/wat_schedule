@@ -9,12 +9,20 @@ part 'faculty_groups_bloc.freezed.dart';
 part 'faculty_groups_event.dart';
 part 'faculty_groups_state.dart';
 
+/// Bloc for managing faculty groups state.
+/// It handles events related to fetching faculty groups
+/// and emits states based on the result of the usecase.
 class FacultyGroupsBloc extends Bloc<FacultyGroupsEvent, FacultyGroupsState> {
   final FacultyGroupsUsecase facultyGroupsUsecase;
 
   FacultyGroupsBloc({required this.facultyGroupsUsecase})
       : super(const FacultyGroupsState.loading()) {
     on<_GetFacultyGroups>(_getFacultyGroups);
+    on<_SelectGroup>(_onSelectGroup);
+  }
+
+  void _onSelectGroup(_SelectGroup event, Emitter<FacultyGroupsState> emit) {
+    emit(FacultyGroupsState.groupSelected(groupName: event.groupName));
   }
 
   Future<void> _getFacultyGroups(
@@ -22,7 +30,9 @@ class FacultyGroupsBloc extends Bloc<FacultyGroupsEvent, FacultyGroupsState> {
     final Either<Failure, FacultyGroupsEntity> result =
         await facultyGroupsUsecase.call();
 
-    result.fold((l) => emit(_Error(errorMessage: l.message)),
-        (r) => emit(const _Loaded()));
+    result.fold(
+      (l) => emit(ErrorGroups(errorMessage: l.message)),
+      (r) => emit(LoadedGroups(entity: r)),
+    );
   }
 }
