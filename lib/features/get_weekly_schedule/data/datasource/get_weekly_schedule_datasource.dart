@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:wat_schedule/core/constants/pathes.dart';
+import 'package:wat_schedule/core/network/error/handler.dart';
 import 'package:wat_schedule/core/network/factory/dio_factory.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/domain/entites/daily_schedule_entity.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/domain/entites/get_weekly_schedule_entity.dart';
@@ -20,7 +21,9 @@ abstract class GetWeeklyScheduleDatasource {
 /// It returns a [ScheduleEntity] which contains the weekly schedule data.
 /// If an error occurs during the request, it throws an exception handled by the [DioFactory
 @LazySingleton(as: GetWeeklyScheduleDatasource)
-class GetWeeklyScheduleImpl implements GetWeeklyScheduleDatasource {
+class GetWeeklyScheduleImpl
+    with ErrorHandling
+    implements GetWeeklyScheduleDatasource {
   final DioFactory dioFactory;
 
   GetWeeklyScheduleImpl({required this.dioFactory});
@@ -50,7 +53,7 @@ class GetWeeklyScheduleImpl implements GetWeeklyScheduleDatasource {
             .toList(),
       );
     } catch (e, st) {
-      throw dioFactory.handleException(e, stackTrace: st);
+      throw handleException(e, stackTrace: st);
     }
   }
 }

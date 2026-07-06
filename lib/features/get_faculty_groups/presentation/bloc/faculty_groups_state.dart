@@ -6,10 +6,10 @@ part of 'faculty_groups_bloc.dart';
 @freezed
 abstract class FacultyGroupsState with _$FacultyGroupsState {
   const factory FacultyGroupsState.loading() = LoadingGroups;
-  const factory FacultyGroupsState.loaded(
-      {required FacultyGroupsEntity entity}) = LoadedGroups;
-  const factory FacultyGroupsState.groupSelected({required String groupName}) =
-      GroupSelected;
+  const factory FacultyGroupsState.loaded({
+    required FacultyGroupsEntity entity,
+    String? selectedGroupNam,
+  }) = LoadedGroups;
   const factory FacultyGroupsState.error({required String errorMessage}) =
       ErrorGroups;
 }

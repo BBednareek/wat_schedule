@@ -18,6 +18,8 @@ import 'package:wat_schedule/features/get_faculty_groups/data/repository/faculty
     as _i112;
 import 'package:wat_schedule/features/get_faculty_groups/domain/usecase/faculty_groups_usecase.dart'
     as _i741;
+import 'package:wat_schedule/features/get_faculty_groups/presentation/bloc/faculty_groups_bloc.dart'
+    as _i688;
 import 'package:wat_schedule/features/get_weekly_schedule/data/datasource/get_weekly_schedule_datasource.dart'
     as _i548;
 import 'package:wat_schedule/features/get_weekly_schedule/data/repository/get_weekly_schedule_repository.dart'
@@ -60,6 +62,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i741.FacultyGroupsUsecase>(() =>
         _i741.FacultyGroupsUsecase(
             scheduleRepository: gh<_i112.FacultyGroupsRepository>()));
+    gh.lazySingleton<_i688.FacultyGroupsBloc>(() => _i688.FacultyGroupsBloc(
+        facultyGroupsUsecase: gh<_i741.FacultyGroupsUsecase>()));
     return this;
   }
 }

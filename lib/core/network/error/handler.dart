@@ -9,9 +9,22 @@ mixin ErrorHandling {
   Exception handleException(dynamic error, {StackTrace? stackTrace}) {
     log('''
     -----------------------------------
-      Exception: ${error.toString()}
+      Exception: ${error.runtimeType}: ${error.toString()}
     -----------------------------------
     ''');
+
+    if (error is UnprocessableException ||
+        error is ConflictException ||
+        error is NotFoundException ||
+        error is ForbiddenException ||
+        error is ServerException ||
+        error is InternalServerException ||
+        error is AuthException ||
+        error is StorageException ||
+        error is NoInternetConnectionException ||
+        error is TooManyRequestsException) {
+      return error;
+    }
 
     if (error is TimeoutException) {
       return NoInternetConnectionException();
@@ -61,16 +74,21 @@ mixin ErrorHandling {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.connectionError:
         return NoInternetConnectionException();
+
       case DioExceptionType.receiveTimeout:
         return const ServerException(message: 'Server not responding');
+
       case DioExceptionType.badResponse:
         final Response<dynamic>? response = dio.response;
+
         if (response != null) {
           return responseException(response);
         }
+
         return const ServerException(message: 'Bad server response');
+
       default:
-        return defaultException(dio, dio.stackTrace);
+        return defaultException(dio.error, dio.stackTrace);
     }
   }
 
@@ -89,6 +107,8 @@ mixin ErrorHandling {
     ------------------------------------------------------
     ''');
 
-    return const ServerException(message: 'Unknown application error');
+    return ServerException(
+      message: error?.toString() ?? 'Unexpected error',
+    );
   }
 }
