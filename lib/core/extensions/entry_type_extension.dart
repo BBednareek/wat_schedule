@@ -15,6 +15,10 @@ extension EntryTypeExtension on EntryType {
         return 'E';
       case EntryType.Ep:
         return 'Ep';
+      case EntryType.Zp:
+        return 'Zp';
+      case EntryType.Inne:
+        return 'Inne';
       default:
         return '';
     }

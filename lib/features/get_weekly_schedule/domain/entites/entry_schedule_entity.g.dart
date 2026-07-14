@@ -34,5 +34,6 @@ const _$EntryTypeEnumMap = {
   EntryType.w: 'w',
   EntryType.E: 'E',
   EntryType.Ep: 'Ep',
+  EntryType.Zp: 'Zp',
   EntryType.unknown: 'unknown',
 };

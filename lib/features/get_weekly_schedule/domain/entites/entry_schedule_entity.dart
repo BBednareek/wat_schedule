@@ -25,6 +25,12 @@ enum EntryType {
   E,
   @JsonValue('Ep')
   Ep,
+  @JsonValue('Zp')
+  Zp,
+  @JsonValue('Zal')
+  Zal,
+  @JsonValue('Inne')
+  Inne,
 
   unknown
 }
