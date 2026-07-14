@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class ProjectColors {
-  //for dark theme
-  static const Color darkBackground = Color(0xFF2C3037);
-  static const Color darkContainer = Color(0xFF3F454E);
-  static const Color darkTxt = Color(0xFFF4F4F4);
+  static const Color blue = Color(0xFF0B4DA2);
+  static const Color red = Color(0xFFC7362F);
+  static const Color green = Color(0xFF1A7F64);
 
-  //for light theme
-  static const Color lightBackground = Color(0xFFEDF5FC);
-  static const Color lightContainer = Color(0xFFFFFFFF);
-  static const Color lightTxt = Color(0xFF253858);
+  static const Color lightBackground = Color(0xFFF5F7FA);
+  static const Color lightSurface = Color(0xFFFFFFFF);
+  static const Color lightSurfaceMuted = Color(0xFFE8EEF6);
+  static const Color lightText = Color(0xFF172033);
+  static const Color lightTextMuted = Color(0xFF566273);
+  static const Color lightOutline = Color(0xFFD4DCE8);
 
-  //for both themes
-  static const Color secondary = Color(0xFF000099);
-  static const Color success = Color(0xFF169D00);
-  static const Color error = Color.fromARGB(255, 255, 126, 126);
-  static const Color onErorr = Color(0xFFFF0000);
-  static const Color unactive = Color(0xFF73777B);
-  static const Color transparent = Colors.transparent;
+  static const Color darkBackground = Color(0xFF10141B);
+  static const Color darkSurface = Color(0xFF1B2330);
+  static const Color darkSurfaceMuted = Color(0xFF273244);
+  static const Color darkText = Color(0xFFF1F5F9);
+  static const Color darkTextMuted = Color(0xFFB7C2D0);
+  static const Color darkOutline = Color(0xFF344155);
 }

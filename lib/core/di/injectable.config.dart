@@ -26,6 +26,8 @@ import 'package:wat_schedule/features/get_weekly_schedule/data/repository/get_we
     as _i905;
 import 'package:wat_schedule/features/get_weekly_schedule/domain/usecases/get_weekly_schedule_usecase.dart'
     as _i762;
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/get_weekly_schedule_bloc.dart'
+    as _i252;
 import 'package:wat_schedule/features/theme_cubit/presentation/theme_cubit.dart'
     as _i454;
 
@@ -62,6 +64,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i741.FacultyGroupsUsecase>(() =>
         _i741.FacultyGroupsUsecase(
             scheduleRepository: gh<_i112.FacultyGroupsRepository>()));
+    gh.lazySingleton<_i252.GetWeeklyScheduleBloc>(() =>
+        _i252.GetWeeklyScheduleBloc(
+            getWeeklyScheduleUsecase: gh<_i762.GetWeeklyScheduleUsecase>()));
     gh.lazySingleton<_i688.FacultyGroupsBloc>(() => _i688.FacultyGroupsBloc(
         facultyGroupsUsecase: gh<_i741.FacultyGroupsUsecase>()));
     return this;

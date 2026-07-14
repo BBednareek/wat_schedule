@@ -27,7 +27,7 @@ mixin ErrorHandling {
     }
 
     if (error is TimeoutException) {
-      return NoInternetConnectionException();
+      return const NoInternetConnectionException();
     }
 
     if (error is DioException) {
@@ -58,11 +58,11 @@ mixin ErrorHandling {
       case HttpStatus.conflict:
         return ConflictException.withErrorCode(data);
       case HttpStatus.tooManyRequests:
-        return TooManyRequestsException();
+        return const TooManyRequestsException();
       case HttpStatus.internalServerError:
         return ServerException.withErrorCode(data);
       case HttpStatus.unauthorized:
-        return AuthException();
+        return const AuthException();
     }
 
     return ServerException.withErrorCode(data);
@@ -73,7 +73,7 @@ mixin ErrorHandling {
       case DioExceptionType.sendTimeout:
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.connectionError:
-        return NoInternetConnectionException();
+        return const NoInternetConnectionException();
 
       case DioExceptionType.receiveTimeout:
         return const ServerException(message: 'Server not responding');
@@ -94,7 +94,7 @@ mixin ErrorHandling {
 
   Exception defaultException(dynamic error, StackTrace? stackTrace) {
     if (error is SocketException || error is TimeoutException) {
-      return NoInternetConnectionException();
+      return const NoInternetConnectionException();
     }
 
     log('''

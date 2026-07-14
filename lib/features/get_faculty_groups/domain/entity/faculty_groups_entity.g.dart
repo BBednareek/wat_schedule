@@ -8,15 +8,13 @@ part of 'faculty_groups_entity.dart';
 
 _FacultyGroupsEntity _$FacultyGroupsEntityFromJson(Map<String, dynamic> json) =>
     _FacultyGroupsEntity(
-      groups_by_faculty:
-          (json['groups_by_faculty'] as Map<String, dynamic>).map(
-        (k, e) =>
-            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
-      ),
+      groups_by_department: (json['groups_by_department'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$FacultyGroupsEntityToJson(
         _FacultyGroupsEntity instance) =>
     <String, dynamic>{
-      'groups_by_faculty': instance.groups_by_faculty,
+      'groups_by_department': instance.groups_by_department,
     };

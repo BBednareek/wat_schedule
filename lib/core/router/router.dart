@@ -1,33 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_schedule/core/constants/departements.dart';
+import 'package:wat_schedule/core/di/injectable.dart';
+import 'package:wat_schedule/features/choose_departement/presentation/screens/choose_departement.dart';
 import 'package:wat_schedule/features/get_faculty_groups/presentation/bloc/faculty_groups_bloc.dart';
 import 'package:wat_schedule/features/get_faculty_groups/presentation/screens/get_faculty_group_screen.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/get_weekly_schedule_bloc.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/presentation/screen/get_weekly_schedule_screen.dart';
 
-GoRouter createAppRouter({
-  required FacultyGroupsBloc facultyGroupsBloc,
-  required GetWeeklyScheduleBloc weeklyScheduleBloc,
-}) {
+GoRouter createAppRouter({required GetWeeklyScheduleBloc weeklyScheduleBloc}) {
   return GoRouter(
-    initialLocation: facultyGroupsBloc.state.maybeWhen(
-      loaded: (entity, selectedGroupName) {
-        if (selectedGroupName != null && selectedGroupName.isNotEmpty) {
-          return '/schedule';
-        }
-
-        return '/main';
-      },
-      orElse: () => '/main',
-    ),
+    initialLocation: weeklyScheduleBloc.state.groupName.isNotEmpty
+        ? '/display-schedule'
+        : '/choose-department',
     routes: [
       simpleRoute(
-        path: '/main',
-        builder: (context, state) => const GetFacultyGroupScreen(),
-      ),
+          path: '/choose-department',
+          builder: (context, state) => const ChooseDepartement()),
       simpleRoute(
-        path: '/schedule',
-        builder: (context, state) => const GetWeeklyScheduleScreen(),
+          path: '/choose-faculty-group',
+          builder: (context, state) {
+            final Department? department = state.extra as Department?;
+
+            if (department == null || department.code.isEmpty)
+              return const ChooseDepartement();
+
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) =>
+                      FacultyGroupsBloc(facultyGroupsUsecase: locator())
+                        ..add(FacultyGroupsEvent.getFacultyGroups(
+                            department: department.code)),
+                ),
+                BlocProvider.value(value: weeklyScheduleBloc)
+              ],
+              child: GetFacultyGroupScreen(
+                department: department,
+              ),
+            );
+          }),
+      simpleRoute(
+        path: '/display-schedule',
+        builder: (context, state) => BlocProvider.value(
+          value: weeklyScheduleBloc,
+          child: const GetWeeklyScheduleScreen(),
+        ),
       ),
     ],
   );

@@ -16,6 +16,7 @@ class FacultyGroupsUsecase {
 
   FacultyGroupsUsecase({required this.scheduleRepository});
 
-  Future<Either<Failure, FacultyGroupsEntity>> call() async =>
-      await scheduleRepository.getFacultyGroups();
+  Future<Either<Failure, FacultyGroupsEntity>> call(
+          {required String department}) async =>
+      await scheduleRepository.getFacultyGroups(department: department);
 }

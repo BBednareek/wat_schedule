@@ -6,6 +6,19 @@
 /// The start date is formatted as "DD.MM.YYYY".
 library;
 
+DateTime startOfScheduleWeek(DateTime date) {
+  final DateTime normalized = DateTime(date.year, date.month, date.day);
+
+  return normalized.subtract(Duration(days: normalized.weekday - 1));
+}
+
+bool isSameScheduleWeek(DateTime firstDate, DateTime secondDate) {
+  final DateTime firstMonday = startOfScheduleWeek(firstDate);
+  final DateTime secondMonday = startOfScheduleWeek(secondDate);
+
+  return firstMonday == secondMonday;
+}
+
 Map<String, String> generateScheduleParams({required DateTime now}) {
   String getPolishMonthName({required int month}) {
     const List<String> months = [

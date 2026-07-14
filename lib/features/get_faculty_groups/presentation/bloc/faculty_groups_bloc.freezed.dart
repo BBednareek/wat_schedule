@@ -137,14 +137,14 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? getFacultyGroups,
+    TResult Function(String department)? getFacultyGroups,
     TResult Function(String groupName)? selectGroup,
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
-        return getFacultyGroups();
+        return getFacultyGroups(_that.department);
       case _SelectGroup() when selectGroup != null:
         return selectGroup(_that.groupName);
       case _:
@@ -167,13 +167,13 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() getFacultyGroups,
+    required TResult Function(String department) getFacultyGroups,
     required TResult Function(String groupName) selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups():
-        return getFacultyGroups();
+        return getFacultyGroups(_that.department);
       case _SelectGroup():
         return selectGroup(_that.groupName);
       case _:
@@ -195,13 +195,13 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? getFacultyGroups,
+    TResult? Function(String department)? getFacultyGroups,
     TResult? Function(String groupName)? selectGroup,
   }) {
     final _that = this;
     switch (_that) {
       case _GetFacultyGroups() when getFacultyGroups != null:
-        return getFacultyGroups();
+        return getFacultyGroups(_that.department);
       case _SelectGroup() when selectGroup != null:
         return selectGroup(_that.groupName);
       case _:
@@ -213,20 +213,65 @@ extension FacultyGroupsEventPatterns on FacultyGroupsEvent {
 /// @nodoc
 
 class _GetFacultyGroups implements FacultyGroupsEvent {
-  const _GetFacultyGroups();
+  const _GetFacultyGroups({required this.department});
+
+  final String department;
+
+  /// Create a copy of FacultyGroupsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$GetFacultyGroupsCopyWith<_GetFacultyGroups> get copyWith =>
+      __$GetFacultyGroupsCopyWithImpl<_GetFacultyGroups>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _GetFacultyGroups);
+        (other.runtimeType == runtimeType &&
+            other is _GetFacultyGroups &&
+            (identical(other.department, department) ||
+                other.department == department));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, department);
 
   @override
   String toString() {
-    return 'FacultyGroupsEvent.getFacultyGroups()';
+    return 'FacultyGroupsEvent.getFacultyGroups(department: $department)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$GetFacultyGroupsCopyWith<$Res>
+    implements $FacultyGroupsEventCopyWith<$Res> {
+  factory _$GetFacultyGroupsCopyWith(
+          _GetFacultyGroups value, $Res Function(_GetFacultyGroups) _then) =
+      __$GetFacultyGroupsCopyWithImpl;
+  @useResult
+  $Res call({String department});
+}
+
+/// @nodoc
+class __$GetFacultyGroupsCopyWithImpl<$Res>
+    implements _$GetFacultyGroupsCopyWith<$Res> {
+  __$GetFacultyGroupsCopyWithImpl(this._self, this._then);
+
+  final _GetFacultyGroups _self;
+  final $Res Function(_GetFacultyGroups) _then;
+
+  /// Create a copy of FacultyGroupsEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? department = null,
+  }) {
+    return _then(_GetFacultyGroups(
+      department: null == department
+          ? _self.department
+          : department // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 

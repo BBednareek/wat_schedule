@@ -4,7 +4,7 @@ import 'package:wat_schedule/core/network/factory/dio_factory.dart';
 import 'package:wat_schedule/features/get_faculty_groups/domain/entity/faculty_groups_entity.dart';
 
 abstract class FacultyGroupsRemoteDatasource {
-  Future<FacultyGroupsEntity> getFacultyGroups();
+  Future<FacultyGroupsEntity> getFacultyGroups({required String department});
 }
 
 /// Implementation of the [FacultyGroupsRemoteDatasource] that fetches faculty groups from a remote API.
@@ -24,10 +24,11 @@ class FacultyGroupsRemoteDatasourceImpl
   /// Returns a [FacultyGroupsEntity] containing the groups by faculty.
   /// If an error occurs, it throws an exception handled by the [DioFactory].
   @override
-  Future<FacultyGroupsEntity> getFacultyGroups() async {
+  Future<FacultyGroupsEntity> getFacultyGroups(
+      {required String department}) async {
     try {
       final Map<String, dynamic> result =
-          await dioFactory.get(Pathes.getFacultyGroups);
+          await dioFactory.get('${Pathes.getFacultyGroups}/$department');
       return FacultyGroupsEntity.fromJson(result);
     } catch (e, st) {
       throw dioFactory.handleException(e, stackTrace: st);

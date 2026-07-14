@@ -5,7 +5,8 @@ import 'package:wat_schedule/features/get_faculty_groups/data/datasource/faculty
 import 'package:wat_schedule/features/get_faculty_groups/domain/entity/faculty_groups_entity.dart';
 
 abstract class FacultyGroupsRepository {
-  Future<Either<Failure, FacultyGroupsEntity>> getFacultyGroups();
+  Future<Either<Failure, FacultyGroupsEntity>> getFacultyGroups(
+      {required String department});
 }
 
 /// Implementation of the [FacultyGroupsRepository] that interacts with the remote data source to fetch faculty groups.
@@ -24,10 +25,13 @@ class FacultyGroupsRepositoryImpl implements FacultyGroupsRepository {
   /// If an error occurs, it returns a [Failure] wrapped in the left side of the [Either].
   /// If the fetch is successful, it returns the [FacultyGroupsEntity] wrapped in the right side of the [Either].
   @override
-  Future<Either<Failure, FacultyGroupsEntity>> getFacultyGroups() async {
+  Future<Either<Failure, FacultyGroupsEntity>> getFacultyGroups(
+      {required String department}) async {
     try {
       final FacultyGroupsEntity result =
-          await facultyGroupsRemoteDatasource.getFacultyGroups();
+          await facultyGroupsRemoteDatasource.getFacultyGroups(
+        department: department,
+      );
       return Right(result);
     } catch (e) {
       return Left(Failure.throwable(e));

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$FacultyGroupsEntity {
-  Map<String, List<String>> get groups_by_faculty;
+  List<String> get groups_by_department;
 
   /// Create a copy of FacultyGroupsEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -33,17 +33,17 @@ mixin _$FacultyGroupsEntity {
         (other.runtimeType == runtimeType &&
             other is FacultyGroupsEntity &&
             const DeepCollectionEquality()
-                .equals(other.groups_by_faculty, groups_by_faculty));
+                .equals(other.groups_by_department, groups_by_department));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(groups_by_faculty));
+      runtimeType, const DeepCollectionEquality().hash(groups_by_department));
 
   @override
   String toString() {
-    return 'FacultyGroupsEntity(groups_by_faculty: $groups_by_faculty)';
+    return 'FacultyGroupsEntity(groups_by_department: $groups_by_department)';
   }
 }
 
@@ -53,7 +53,7 @@ abstract mixin class $FacultyGroupsEntityCopyWith<$Res> {
           FacultyGroupsEntity value, $Res Function(FacultyGroupsEntity) _then) =
       _$FacultyGroupsEntityCopyWithImpl;
   @useResult
-  $Res call({Map<String, List<String>> groups_by_faculty});
+  $Res call({List<String> groups_by_department});
 }
 
 /// @nodoc
@@ -69,13 +69,13 @@ class _$FacultyGroupsEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? groups_by_faculty = null,
+    Object? groups_by_department = null,
   }) {
     return _then(_self.copyWith(
-      groups_by_faculty: null == groups_by_faculty
-          ? _self.groups_by_faculty
-          : groups_by_faculty // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<String>>,
+      groups_by_department: null == groups_by_department
+          ? _self.groups_by_department
+          : groups_by_department // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -173,13 +173,13 @@ extension FacultyGroupsEntityPatterns on FacultyGroupsEntity {
 
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>(
-    TResult Function(Map<String, List<String>> groups_by_faculty)? $default, {
+    TResult Function(List<String> groups_by_department)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
       case _FacultyGroupsEntity() when $default != null:
-        return $default(_that.groups_by_faculty);
+        return $default(_that.groups_by_department);
       case _:
         return orElse();
     }
@@ -200,12 +200,12 @@ extension FacultyGroupsEntityPatterns on FacultyGroupsEntity {
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
-    TResult Function(Map<String, List<String>> groups_by_faculty) $default,
+    TResult Function(List<String> groups_by_department) $default,
   ) {
     final _that = this;
     switch (_that) {
       case _FacultyGroupsEntity():
-        return $default(_that.groups_by_faculty);
+        return $default(_that.groups_by_department);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -225,12 +225,12 @@ extension FacultyGroupsEntityPatterns on FacultyGroupsEntity {
 
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(Map<String, List<String>> groups_by_faculty)? $default,
+    TResult? Function(List<String> groups_by_department)? $default,
   ) {
     final _that = this;
     switch (_that) {
       case _FacultyGroupsEntity() when $default != null:
-        return $default(_that.groups_by_faculty);
+        return $default(_that.groups_by_department);
       case _:
         return null;
     }
@@ -240,19 +240,18 @@ extension FacultyGroupsEntityPatterns on FacultyGroupsEntity {
 /// @nodoc
 @JsonSerializable()
 class _FacultyGroupsEntity implements FacultyGroupsEntity {
-  _FacultyGroupsEntity(
-      {required final Map<String, List<String>> groups_by_faculty})
-      : _groups_by_faculty = groups_by_faculty;
+  _FacultyGroupsEntity({required final List<String> groups_by_department})
+      : _groups_by_department = groups_by_department;
   factory _FacultyGroupsEntity.fromJson(Map<String, dynamic> json) =>
       _$FacultyGroupsEntityFromJson(json);
 
-  final Map<String, List<String>> _groups_by_faculty;
+  final List<String> _groups_by_department;
   @override
-  Map<String, List<String>> get groups_by_faculty {
-    if (_groups_by_faculty is EqualUnmodifiableMapView)
-      return _groups_by_faculty;
+  List<String> get groups_by_department {
+    if (_groups_by_department is EqualUnmodifiableListView)
+      return _groups_by_department;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_groups_by_faculty);
+    return EqualUnmodifiableListView(_groups_by_department);
   }
 
   /// Create a copy of FacultyGroupsEntity
@@ -277,17 +276,17 @@ class _FacultyGroupsEntity implements FacultyGroupsEntity {
         (other.runtimeType == runtimeType &&
             other is _FacultyGroupsEntity &&
             const DeepCollectionEquality()
-                .equals(other._groups_by_faculty, _groups_by_faculty));
+                .equals(other._groups_by_department, _groups_by_department));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_groups_by_faculty));
+      runtimeType, const DeepCollectionEquality().hash(_groups_by_department));
 
   @override
   String toString() {
-    return 'FacultyGroupsEntity(groups_by_faculty: $groups_by_faculty)';
+    return 'FacultyGroupsEntity(groups_by_department: $groups_by_department)';
   }
 }
 
@@ -299,7 +298,7 @@ abstract mixin class _$FacultyGroupsEntityCopyWith<$Res>
       __$FacultyGroupsEntityCopyWithImpl;
   @override
   @useResult
-  $Res call({Map<String, List<String>> groups_by_faculty});
+  $Res call({List<String> groups_by_department});
 }
 
 /// @nodoc
@@ -315,13 +314,13 @@ class __$FacultyGroupsEntityCopyWithImpl<$Res>
   @override
   @pragma('vm:prefer-inline')
   $Res call({
-    Object? groups_by_faculty = null,
+    Object? groups_by_department = null,
   }) {
     return _then(_FacultyGroupsEntity(
-      groups_by_faculty: null == groups_by_faculty
-          ? _self._groups_by_faculty
-          : groups_by_faculty // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<String>>,
+      groups_by_department: null == groups_by_department
+          ? _self._groups_by_department
+          : groups_by_department // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }

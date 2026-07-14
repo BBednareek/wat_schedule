@@ -1,30 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_schedule/features/theme_cubit/entity/theme_entity.dart';
 
 @injectable
 class ThemeCubit extends HydratedCubit<ThemeEntity> {
-  ThemeCubit()
-      : super(
-            ThemeEntity(theme: ThemeMode.system, isDark: true, isSystem: true));
+  ThemeCubit() : super(const ThemeEntity.system());
 
-  void changeTheme(bool isSystem, bool isDark) {
-    if (isSystem) {
-      emit(ThemeEntity(
-          theme: ThemeMode.system, isDark: isDark, isSystem: isSystem));
-    } else if (!isSystem && isDark) {
-      emit(ThemeEntity(
-          theme: ThemeMode.dark, isDark: isDark, isSystem: isSystem));
-    } else {
-      emit(ThemeEntity(
-          theme: ThemeMode.light, isDark: isDark, isSystem: isSystem));
-    }
-  }
+  void setSystemTheme() => emit(const ThemeEntity.system());
+
+  void setLightTheme() => emit(const ThemeEntity.light());
+
+  void setDarkTheme() => emit(const ThemeEntity.dark());
+
+  void toggleDarkMode(bool isDark) => isDark ? setDarkTheme() : setLightTheme();
 
   @override
   ThemeEntity? fromJson(Map<String, dynamic> json) {
-    return ThemeEntity.fromJson(json);
+    try {
+      return ThemeEntity.fromJson(json);
+    } catch (_) {
+      return null;
+    }
   }
 
   @override

@@ -14,8 +14,7 @@ part 'faculty_groups_state.dart';
 /// It handles events related to fetching faculty groups
 /// and emits states based on the result of the usecase.
 @lazySingleton
-class FacultyGroupsBloc
-    extends HydratedBloc<FacultyGroupsEvent, FacultyGroupsState> {
+class FacultyGroupsBloc extends Bloc<FacultyGroupsEvent, FacultyGroupsState> {
   final FacultyGroupsUsecase facultyGroupsUsecase;
 
   FacultyGroupsBloc({required this.facultyGroupsUsecase})
@@ -34,43 +33,11 @@ class FacultyGroupsBloc
   Future<void> _getFacultyGroups(
       _GetFacultyGroups event, Emitter<FacultyGroupsState> emit) async {
     final Either<Failure, FacultyGroupsEntity> result =
-        await facultyGroupsUsecase.call();
+        await facultyGroupsUsecase.call(department: event.department);
 
     result.fold(
       (l) => emit(ErrorGroups(errorMessage: l.message)),
       (r) => emit(LoadedGroups(entity: r)),
-    );
-  }
-
-  @override
-  FacultyGroupsState? fromJson(Map<String, dynamic> json) {
-    try {
-      final type = json['type'] as String?;
-      switch (type) {
-        case 'loaded':
-          return FacultyGroupsState.loaded(
-            entity: FacultyGroupsEntity.fromJson(
-                Map<String, dynamic>.from(json['entity'] as Map)),
-            selectedGroupNam: json['selectedGroupName'] as String?,
-          );
-
-        default:
-          return null;
-      }
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Map<String, dynamic>? toJson(FacultyGroupsState state) {
-    return state.maybeWhen(
-      loaded: (entity, selectedGroupNam) => {
-        'type': 'loaded',
-        'entity': entity.toJson(),
-        'selectedGroupName': selectedGroupNam,
-      },
-      orElse: () => null,
     );
   }
 }

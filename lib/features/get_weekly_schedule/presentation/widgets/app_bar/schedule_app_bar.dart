@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/appbar_daterange.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/appbar_title_row.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/app_bar/schedule_app_bar_title.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/app_bar/schedule_week_range.dart';
 
 class ScheduleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ScheduleAppBar({super.key});
@@ -11,18 +11,17 @@ class ScheduleAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       automaticallyImplyLeading: false,
       flexibleSpace: const SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppBarTitleRow(),
+              ScheduleAppBarTitle(),
               SizedBox(height: 8),
-              AppBarDateRange(),
+              ScheduleWeekRange(),
             ],
           ),
         ),
