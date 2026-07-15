@@ -12,7 +12,7 @@ class ScheduleWeekRange extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.currentDate != current.currentDate,
       builder: (context, state) {
-        final currentDate = state.currentDate;
+        final DateTime? currentDate = state.currentDate;
 
         if (currentDate == null) return const SizedBox.shrink();
 
@@ -26,16 +26,16 @@ class ScheduleWeekRange extends StatelessWidget {
   }
 
   String _weekRangeFor(DateTime currentDate) {
-    final monday =
+    final DateTime monday =
         currentDate.subtract(Duration(days: currentDate.weekday - 1));
-    final sunday = monday.add(const Duration(days: 6));
+    final DateTime sunday = monday.add(const Duration(days: 6));
 
     return '${_formatDate(monday)} - ${_formatDate(sunday)}';
   }
 
   String _formatDate(DateTime date) {
-    final day = date.day.toString().padLeft(2, '0');
-    final month = date.month.toString().padLeft(2, '0');
+    final String day = date.day.toString().padLeft(2, '0');
+    final String month = date.month.toString().padLeft(2, '0');
 
     return '$day.$month.${date.year}';
   }

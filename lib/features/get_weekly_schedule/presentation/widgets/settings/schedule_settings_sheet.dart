@@ -6,7 +6,7 @@ import 'package:wat_schedule/features/theme_cubit/entity/theme_entity.dart';
 import 'package:wat_schedule/features/theme_cubit/presentation/theme_cubit.dart';
 
 void showScheduleSettingsSheet({required BuildContext context}) {
-  final themeCubit = context.read<ThemeCubit>();
+  final ThemeCubit themeCubit = context.read<ThemeCubit>();
 
   showModalBottomSheet(
     useRootNavigator: true,
@@ -72,13 +72,9 @@ class ScheduleSettingsSheet extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       title: const Text('Motyw systemowy'),
                       secondary: const Icon(Icons.settings_suggest_outlined),
-                      onChanged: (value) {
-                        if (value) {
-                          context.read<ThemeCubit>().setSystemTheme();
-                        } else {
-                          context.read<ThemeCubit>().setLightTheme();
-                        }
-                      },
+                      onChanged: (value) => value
+                          ? context.read<ThemeCubit>().setSystemTheme()
+                          : context.read<ThemeCubit>().setLightTheme(),
                     ),
                     SwitchListTile(
                       value: state.isDark,

@@ -9,50 +9,49 @@ class ScheduleAppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupName = context.watch<GetWeeklyScheduleBloc>().state.groupName;
-    final theme = Theme.of(context);
-    final color = theme.colorScheme.onSurface;
+    final String groupName =
+        context.watch<GetWeeklyScheduleBloc>().state.groupName;
+    final ThemeData theme = Theme.of(context);
+    final Color color = theme.colorScheme.onSurface;
 
     return SizedBox(
       height: 40,
-      child: Row(
-        children: [
-          ScheduleWeekNavigationButton(
-            isForward: false,
-            onPressed: () => context.read<GetWeeklyScheduleBloc>().add(
-                  const GetWeeklyScheduleEvent.anotherWeeklySchedule(
-                    isForward: false,
-                  ),
+      child: Row(children: [
+        ScheduleWeekNavigationButton(
+          isForward: false,
+          onPressed: () => context.read<GetWeeklyScheduleBloc>().add(
+                const GetWeeklyScheduleEvent.anotherWeeklySchedule(
+                  isForward: false,
                 ),
-          ),
-          Expanded(
-            child: Text(
-              groupName,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: color,
-                fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings),
+        ),
+        const Spacer(),
+        Text(
+          groupName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.titleMedium?.copyWith(
             color: color,
-            onPressed: () => showScheduleSettingsSheet(context: context),
-            tooltip: 'Ustawienia',
+            fontWeight: FontWeight.bold,
           ),
-          ScheduleWeekNavigationButton(
-            isForward: true,
-            onPressed: () => context.read<GetWeeklyScheduleBloc>().add(
-                  const GetWeeklyScheduleEvent.anotherWeeklySchedule(
-                    isForward: true,
-                  ),
+          textAlign: TextAlign.center,
+        ),
+        IconButton(
+          icon: const Icon(Icons.settings),
+          color: color,
+          onPressed: () => showScheduleSettingsSheet(context: context),
+          tooltip: 'Ustawienia',
+        ),
+        const Spacer(),
+        ScheduleWeekNavigationButton(
+          isForward: true,
+          onPressed: () => context.read<GetWeeklyScheduleBloc>().add(
+                const GetWeeklyScheduleEvent.anotherWeeklySchedule(
+                  isForward: true,
                 ),
-          ),
-        ],
-      ),
+              ),
+        ),
+      ]),
     );
   }
 }

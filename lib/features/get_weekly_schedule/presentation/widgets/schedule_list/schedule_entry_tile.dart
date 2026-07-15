@@ -37,8 +37,8 @@ class _ScheduleEntryMeta extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final location = _location;
-    final metaStyle = context.textTheme.bodySmall?.copyWith(
+    final String location = _location;
+    final TextStyle? metaStyle = context.textTheme.bodySmall?.copyWith(
       color: context.scheduleColors.mutedText,
     );
 
