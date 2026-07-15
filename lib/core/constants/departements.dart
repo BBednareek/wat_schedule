@@ -17,7 +17,7 @@ class Departments extends Constants {
   static const String WLO = 'Wydział Bezpieczeństwa, Logistyki i Zarządzania';
   static const String WEL = 'Wydział Elektroniki';
   static const String WIG = 'Wydział Inżynierii Lądowej i Geodezji';
-  static const String WIM = 'Wydział Inżynierii Mechanicznej';
+  static const String WME = 'Wydział Inżynierii Mechanicznej';
   static const String WML = 'Wydział Mechatroniki, Uzbrojenia i Lotnictwa';
   static const String WTC = 'Wydział Nowych Technologii i Chemii';
   static const String IOE = 'Instytut Optoelektroniki';
@@ -29,12 +29,12 @@ class Departments extends Constants {
       'https://www.wojsko-polskie.pl/wat/u/ed/e8/ede86952-c130-4694-8254-774106f7db59/logo_wcy_kolor.png';
 
   static const String WELIMG =
-      'https://www.wojsko-polskie.pl/wat/u/ed/e8/ede86952-c130-4694-8254-774106f7db59/logo_wcy_kolor.png';
+      'https://www.wojsko-polskie.pl/wat/u/0d/b3/0db32f82-fdda-4439-b336-fff4beb6cbb8/logo_wel_kolor.png';
 
   static const String WIGIMG =
       'https://www.wojsko-polskie.pl/wat/u/18/b6/18b6ca31-3a20-4d00-9f13-ca9b37f249fd/logo_wig_kolor.png';
 
-  static const String WIMIMG =
+  static const String WMEIMG =
       'https://www.wojsko-polskie.pl/wat/u/58/d3/58d3a24e-4792-460e-a1ac-d5f67f9a0c2d/logo_wim_kolor_pl.png';
 
   static const String WMLIMG =
@@ -51,7 +51,7 @@ class Departments extends Constants {
     Department(code: 'WLO', name: WLO, imageUrl: WLOIMG),
     Department(code: 'WEL', name: WEL, imageUrl: WELIMG),
     Department(code: 'WIG', name: WIG, imageUrl: WIGIMG),
-    Department(code: 'WIM', name: WIM, imageUrl: WIMIMG),
+    Department(code: 'WME', name: WME, imageUrl: WMEIMG),
     Department(code: 'WML', name: WML, imageUrl: WMLIMG),
     Department(code: 'WTC', name: WTC, imageUrl: WTCIMG),
     Department(code: 'IOE', name: IOE, imageUrl: IOEIMG),
