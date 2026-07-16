@@ -19,12 +19,12 @@ enum FailureType {
 class Failure extends Equatable {
   final FailureType type;
   final String errorCode;
-  final String message;
+  final String errorMessage;
 
   const Failure({
     required this.type,
     required this.errorCode,
-    required this.message,
+    required this.errorMessage,
   });
 
   factory Failure.throwable(dynamic e) {
@@ -32,56 +32,56 @@ class Failure extends Equatable {
       return Failure(
         type: FailureType.unprocessable,
         errorCode: 'unprocessable',
-        message: e.message,
+        errorMessage: e.errorMessage,
       );
     } else if (e is ConflictException) {
       return Failure(
         type: FailureType.conflict,
         errorCode: 'conflict',
-        message: e.message,
+        errorMessage: e.errorMessage,
       );
     } else if (e is NotFoundException) {
       return Failure(
         type: FailureType.notFound,
         errorCode: 'not_found',
-        message: e.message,
+        errorMessage: e.errorMessage,
       );
     } else if (e is ForbiddenException) {
       return Failure(
         type: FailureType.forbidden,
         errorCode: 'forbidden',
-        message: e.message,
+        errorMessage: e.errorMessage,
       );
     } else if (e is ServerException) {
       return Failure(
         type: FailureType.server,
         errorCode: 'server_exception',
-        message: e.message,
+        errorMessage: e.errorMessage,
       );
     } else if (e is NoInternetConnectionException || e is SocketException) {
       return const Failure(
         type: FailureType.noInternet,
         errorCode: 'no_internet',
-        message: 'No internet connection',
+        errorMessage: 'No internet connection',
       );
     } else if (e is TooManyRequestsException) {
       return const Failure(
         type: FailureType.tooManyRequests,
         errorCode: 'too_many_requests',
-        message: 'Too many requests',
+        errorMessage: 'Too many requests',
       );
     } else {
       return const Failure(
         type: FailureType.unknown,
         errorCode: 'unknown_failure',
-        message: 'An unknown error occurred',
+        errorMessage: 'An unknown error occurred',
       );
     }
   }
 
   @override
-  List<Object> get props => [type, message];
+  List<Object> get props => [type, errorMessage];
 
   @override
-  String toString() => message;
+  String toString() => errorMessage;
 }

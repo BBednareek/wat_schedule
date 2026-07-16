@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wat_schedule/core/extensions/context_extension.dart';
 import 'package:wat_schedule/core/extensions/entry_type_extension.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/domain/entites/entry_schedule_entity.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/domain/entities/schedule_entry_entity.dart';
 
 class ScheduleEntryTile extends StatelessWidget {
-  final EntryEntity entry;
+  final ScheduleEntryEntity entry;
 
   const ScheduleEntryTile({
     required this.entry,
@@ -13,104 +13,149 @@ class ScheduleEntryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _ScheduleEntryMeta(entry: entry),
-            const SizedBox(height: 4),
-            _ScheduleEntrySubject(entry: entry),
-          ],
+    final String subject = entry.subject?.trim().isNotEmpty == true
+        ? entry.subject!.trim()
+        : entry.raw;
+
+    return Semantics(
+      container: true,
+      label: 'Szczegóły zajęć: $subject',
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+        color: context.scheduleColors.surfaceMuted,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14),
+          side: BorderSide(
+            color: context.colorScheme.primary.withAlpha(48),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _EntryHeader(subject: subject, type: entry.type),
+              const SizedBox(height: 12),
+              Divider(
+                height: 1,
+                color: context.scheduleColors.outline,
+              ),
+              const SizedBox(height: 12),
+              if (entry.blockTime.isNotEmpty)
+                _EntryDetail(
+                  icon: Icons.schedule_outlined,
+                  label: 'Godziny',
+                  value: entry.blockTime,
+                ),
+              if (entry.room?.isNotEmpty == true)
+                _EntryDetail(
+                  icon: Icons.meeting_room_outlined,
+                  label: 'Sala',
+                  value: entry.room!,
+                ),
+              if (entry.building?.isNotEmpty == true)
+                _EntryDetail(
+                  icon: Icons.business_outlined,
+                  label: 'Budynek',
+                  value: entry.building!,
+                ),
+              if (entry.blockRaw.isNotEmpty)
+                _EntryDetail(
+                  icon: Icons.view_module_outlined,
+                  label: 'Blok zajęć',
+                  value: entry.blockRaw,
+                  isLast: true,
+                ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class _ScheduleEntryMeta extends StatelessWidget {
-  final EntryEntity entry;
+class _EntryHeader extends StatelessWidget {
+  final String subject;
+  final EntryType? type;
 
-  const _ScheduleEntryMeta({required this.entry});
-
-  @override
-  Widget build(BuildContext context) {
-    final String location = _location;
-    final TextStyle? metaStyle = context.textTheme.bodySmall?.copyWith(
-      color: context.scheduleColors.mutedText,
-    );
-
-    return Row(
-      children: [
-        if (entry.block_raw.isNotEmpty)
-          Text(
-            entry.block_raw,
-            style: metaStyle,
-          ),
-        if (entry.block_raw.isNotEmpty && entry.block_time.isNotEmpty)
-          const SizedBox(width: 16),
-        if (entry.block_time.isNotEmpty)
-          Text(
-            entry.block_time,
-            style: metaStyle,
-          ),
-        const Spacer(),
-        if (location.isNotEmpty)
-          Flexible(
-            child: Text(
-              location,
-              style: metaStyle?.copyWith(
-                overflow: TextOverflow.ellipsis,
-              ),
-              maxLines: 1,
-              textAlign: TextAlign.right,
-            ),
-          ),
-      ],
-    );
-  }
-
-  String get _location {
-    return [
-      entry.room,
-      entry.building,
-    ].whereType<String>().where((value) => value.isNotEmpty).join('/');
-  }
-}
-
-class _ScheduleEntrySubject extends StatelessWidget {
-  final EntryEntity entry;
-
-  const _ScheduleEntrySubject({required this.entry});
+  const _EntryHeader({required this.subject, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
-
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            entry.subject ?? entry.raw,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+        Text(
+          subject,
+          style: context.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.w700,
           ),
         ),
-        if (entry.type != null) ...[
-          const SizedBox(width: 8),
-          Text(
-            entry.type!.display,
-            style: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.primary,
+        if (type != null) ...[
+          const SizedBox(height: 8),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: context.colorScheme.primary.withAlpha(24),
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Text(
+                type!.displayName,
+                style: context.textTheme.labelMedium?.copyWith(
+                  color: context.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           ),
         ],
       ],
+    );
+  }
+}
+
+class _EntryDetail extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+  final bool isLast;
+
+  const _EntryDetail({
+    required this.icon,
+    required this.label,
+    required this.value,
+    this.isLast = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: isLast ? 0 : 9),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: context.scheduleColors.mutedText,
+          ),
+          const SizedBox(width: 9),
+          SizedBox(
+            width: 74,
+            child: Text(label, style: context.textTheme.labelMedium),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              value,
+              style: context.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

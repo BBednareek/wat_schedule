@@ -1,28 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:wat_schedule/core/constants/app_routes.dart';
 import 'package:wat_schedule/core/extensions/context_extension.dart';
+import 'package:wat_schedule/core/theme/theme.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/weekly_schedule_bloc.dart';
 import 'package:wat_schedule/features/theme_cubit/entity/theme_entity.dart';
 import 'package:wat_schedule/features/theme_cubit/presentation/theme_cubit.dart';
 
 void showScheduleSettingsSheet({required BuildContext context}) {
   final ThemeCubit themeCubit = context.read<ThemeCubit>();
+  final WeeklyScheduleBloc weeklyScheduleBloc =
+      context.read<WeeklyScheduleBloc>();
 
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
     isScrollControlled: true,
-    backgroundColor: Theme.of(context).colorScheme.surface,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-    ),
+    backgroundColor: Colors.transparent,
     builder: (sheetContext) {
       return BlocProvider.value(
         value: themeCubit,
-        child: ScheduleSettingsSheet(
-          onChangeGroup: () {
-            Navigator.of(sheetContext).pop();
-            context.go('/choose-department');
+        child: BlocBuilder<ThemeCubit, ThemeEntity>(
+          builder: (context, themeState) {
+            final Brightness brightness = themeState.isSystem
+                ? MediaQuery.platformBrightnessOf(context)
+                : themeState.isDark
+                    ? Brightness.dark
+                    : Brightness.light;
+            final ThemeData sheetTheme =
+                brightness == Brightness.dark ? darkTheme() : lightTheme();
+
+            return AnimatedTheme(
+              data: sheetTheme,
+              duration: const Duration(milliseconds: 200),
+              child: Material(
+                color: sheetTheme.colorScheme.surface,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: ScheduleSettingsSheet(
+                  onChangeGroup: () {
+                    weeklyScheduleBloc.add(
+                      const WeeklyScheduleEvent.reset(),
+                    );
+                    Navigator.of(sheetContext).pop();
+                    context.go(AppRoutes.chooseDepartment);
+                  },
+                ),
+              ),
+            );
           },
         ),
       );

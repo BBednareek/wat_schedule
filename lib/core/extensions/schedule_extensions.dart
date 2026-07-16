@@ -1,9 +1,3 @@
-/// Generates a map of schedule parameters based on the current date.
-/// The parameters include the month name in Polish, the week number,
-/// and the start date of the week.
-/// The week number is calculated based on the first Monday of the month.
-/// The month name is in Polish, and the week number is represented in Roman numerals.
-/// The start date is formatted as "DD.MM.YYYY".
 library;
 
 DateTime startOfScheduleWeek(DateTime date) {
@@ -13,73 +7,67 @@ DateTime startOfScheduleWeek(DateTime date) {
 }
 
 bool isSameScheduleWeek(DateTime firstDate, DateTime secondDate) {
-  final DateTime firstMonday = startOfScheduleWeek(firstDate);
-  final DateTime secondMonday = startOfScheduleWeek(secondDate);
-
-  return firstMonday == secondMonday;
+  return startOfScheduleWeek(firstDate) == startOfScheduleWeek(secondDate);
 }
 
-Map<String, String> generateScheduleParams({required DateTime now}) {
-  String getPolishMonthName({required int month}) {
-    const List<String> months = [
-      '',
-      'styczeń',
-      'luty',
-      'marzec',
-      'kwiecień',
-      'maj',
-      'czerwiec',
-      'lipiec',
-      'sierpień',
-      'wrzesień',
-      'październik',
-      'listopad',
-      'grudzień'
-    ];
-    return months[month];
+class ScheduleRequestParameters {
+  final String month;
+  final String week;
+  final String startDate;
+
+  const ScheduleRequestParameters({
+    required this.month,
+    required this.week,
+    required this.startDate,
+  });
+
+  factory ScheduleRequestParameters.forDate(DateTime date) {
+    final DateTime monday = startOfScheduleWeek(date);
+
+    return ScheduleRequestParameters(
+      month: _polishMonthNames[monday.month],
+      week: '${monday.day.toString().padLeft(2, '0')}'
+          '${_romanMonths[monday.month]}',
+      startDate: _formatDate(monday),
+    );
   }
 
-  String toRoman({required int number}) {
-    const Map<int, String> map = {
-      1: 'I',
-      2: 'II',
-      3: 'III',
-      4: 'IV',
-      5: 'V',
-      6: 'VI',
-      7: 'VII',
-      8: 'VIII',
-      9: 'IX',
-      10: 'X',
-      11: 'XI',
-      12: 'XII'
-    };
-    return map[number] ?? number.toString();
+  static String _formatDate(DateTime date) {
+    final String day = date.day.toString().padLeft(2, '0');
+    final String month = date.month.toString().padLeft(2, '0');
+
+    return '$day.$month.${date.year}';
   }
 
-  final DateTime currentMonday = now.subtract(Duration(days: now.weekday - 1));
+  static const List<String> _polishMonthNames = [
+    '',
+    'styczeń',
+    'luty',
+    'marzec',
+    'kwiecień',
+    'maj',
+    'czerwiec',
+    'lipiec',
+    'sierpień',
+    'wrzesień',
+    'październik',
+    'listopad',
+    'grudzień',
+  ];
 
-  DateTime firstOfMonth = DateTime(now.year, now.month, 1);
-
-  while (firstOfMonth.weekday != DateTime.monday)
-    firstOfMonth = firstOfMonth.add(const Duration(days: 1));
-
-  DateTime iter = firstOfMonth;
-
-  while (iter.isBefore(currentMonday)) {
-    iter = iter.add(const Duration(days: 7));
-  }
-
-  final String week =
-      "${currentMonday.day.toString().padLeft(2, '0')}${toRoman(number: currentMonday.month)}";
-
-  final String month = getPolishMonthName(month: now.month);
-  final String startDate =
-      "${currentMonday.day.toString().padLeft(2, '0')}.${currentMonday.month.toString().padLeft(2, '0')}.${currentMonday.year}";
-
-  return {
-    'month': month,
-    'week': week,
-    'start_date': startDate,
-  };
+  static const List<String> _romanMonths = [
+    '',
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+    'XII',
+  ];
 }

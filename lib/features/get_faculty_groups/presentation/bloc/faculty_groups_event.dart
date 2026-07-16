@@ -5,8 +5,8 @@ part of 'faculty_groups_bloc.dart';
 /// faculty groups from the repository.
 @freezed
 abstract class FacultyGroupsEvent with _$FacultyGroupsEvent {
-  const factory FacultyGroupsEvent.getFacultyGroups(
-      {required String department}) = _GetFacultyGroups;
+  const factory FacultyGroupsEvent.load({required String department}) =
+      _LoadFacultyGroups;
   const factory FacultyGroupsEvent.selectGroup({required String groupName}) =
       _SelectGroup;
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/domain/entites/daily_schedule_entity.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/domain/entities/day_schedule_entity.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/schedule_list/empty_day_schedule_tile.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/schedule_list/schedule_entry_tile.dart';
 

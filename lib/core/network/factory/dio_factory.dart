@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:wat_schedule/core/constants/pathes.dart';
+import 'package:wat_schedule/core/constants/api_paths.dart';
 import 'package:wat_schedule/core/network/error/handler.dart';
 
 // This file defines the DioFactory which is responsible for creating Dio instances
@@ -13,13 +13,13 @@ import 'package:wat_schedule/core/network/error/handler.dart';
 abstract class DioFactory with ErrorHandling {
   // This method returns a Dio instance with the specified base URL and headers.
   // It can be used to create a Dio instance with custom configurations.
-  Dio getDio({String? url, Map<String, dynamic>? headers});
+  Dio createDio({String? url, Map<String, dynamic>? headers});
 
   // This method performs a GET request to the specified route with optional parameters and headers.
   // It returns a Future that resolves to a Map containing the response data.
   Future<Map<String, dynamic>> get(
     String route, {
-    Map<String, dynamic>? params,
+    Map<String, dynamic>? queryParameters,
   });
 }
 
@@ -27,7 +27,7 @@ abstract class DioFactory with ErrorHandling {
 // for creating Dio instances and handling GET requests.
 @LazySingleton(as: DioFactory)
 class DioFactoryImpl extends DioFactory {
-  late final Dio _dio = getDio();
+  late final Dio _dio = createDio();
 
   DioFactoryImpl();
 
@@ -37,23 +37,24 @@ class DioFactoryImpl extends DioFactory {
   // which indicates a successful response.
   // If the status code is outside this range, it will throw an exception.
   @override
-  Dio getDio({String? url, Map<String, dynamic>? headers}) => Dio(BaseOptions(
-      baseUrl: url ?? Pathes.basePath,
-      contentType: 'application/json',
-      responseType: ResponseType.json,
-      headers: headers,
-      validateStatus: (int? status) =>
-          status! >= HttpStatus.ok && status <= HttpStatus.imUsed))
-    ..interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      error: true,
-      compact: true,
-      maxWidth: 90,
-      enabled: kDebugMode,
-    ));
+  Dio createDio({String? url, Map<String, dynamic>? headers}) =>
+      Dio(BaseOptions(
+          baseUrl: url ?? ApiPaths.basePath,
+          contentType: 'application/json',
+          responseType: ResponseType.json,
+          headers: headers,
+          validateStatus: (int? status) =>
+              status! >= HttpStatus.ok && status <= HttpStatus.imUsed))
+        ..interceptors.add(PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          responseHeader: false,
+          error: true,
+          compact: true,
+          maxWidth: 90,
+          enabled: kDebugMode,
+        ));
 
   // This method performs a GET request to the specified route with optional parameters and headers.
   // It uses the Dio instance to make the request and returns the response data as a Map.
@@ -61,13 +62,13 @@ class DioFactoryImpl extends DioFactory {
   @override
   Future<Map<String, dynamic>> get(
     String route, {
-    Map<String, dynamic>? params,
+    Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
     try {
       final Response<dynamic> result = await _dio.get(
         route,
-        queryParameters: params,
+        queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 

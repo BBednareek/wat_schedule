@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ScheduleWeekNavigationButton extends StatelessWidget {
   final bool isForward;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const ScheduleWeekNavigationButton({
     required this.isForward,

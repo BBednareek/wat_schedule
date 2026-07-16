@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wat_schedule/core/addons/main_run.dart';
+import 'package:wat_schedule/core/addons/app_initializer.dart';
 import 'package:wat_schedule/core/di/injectable.dart';
 import 'package:wat_schedule/core/router/router.dart';
 import 'package:wat_schedule/core/theme/theme.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/get_weekly_schedule_bloc.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/weekly_schedule_bloc.dart';
 import 'package:wat_schedule/features/theme_cubit/entity/theme_entity.dart';
 import 'package:wat_schedule/features/theme_cubit/presentation/theme_cubit.dart';
 
 Future<void> main() async {
-  await MainMethods.mainAddon();
+  await AppInitializer.initialize();
 
-  final GetWeeklyScheduleBloc weeklyScheduleBloc =
-      GetWeeklyScheduleBloc(getWeeklyScheduleUsecase: locator());
+  final WeeklyScheduleBloc weeklyScheduleBloc =
+      WeeklyScheduleBloc(getWeeklyScheduleUseCase: locator());
 
   weeklyScheduleBloc.refreshCachedScheduleIfNeeded();
 
@@ -23,7 +23,7 @@ Future<void> main() async {
 
   runApp(
     MainApp(
-      weeklyScheduleBloc: locator<GetWeeklyScheduleBloc>(),
+      weeklyScheduleBloc: locator<WeeklyScheduleBloc>(),
       router: router,
     ),
   );
@@ -36,7 +36,7 @@ class MainApp extends StatefulWidget {
     required this.router,
   });
 
-  final GetWeeklyScheduleBloc weeklyScheduleBloc;
+  final WeeklyScheduleBloc weeklyScheduleBloc;
   final GoRouter router;
 
   @override
@@ -59,7 +59,7 @@ class _MainAppState extends State<MainApp> {
           return MaterialApp.router(
             theme: lightTheme(),
             darkTheme: darkTheme(),
-            themeMode: state.theme,
+            themeMode: state.themeMode,
             debugShowCheckedModeBanner: false,
             title: 'Wat schedule',
             routerConfig: widget.router,

@@ -45,7 +45,7 @@ mixin ErrorHandling {
     final dynamic data = response.data;
 
     if (data is! Map<String, dynamic>) {
-      return const ServerException(message: 'Unexpected server response');
+      return const ServerException(errorMessage: 'Unexpected server response');
     }
 
     switch (response.statusCode) {
@@ -76,7 +76,7 @@ mixin ErrorHandling {
         return const NoInternetConnectionException();
 
       case DioExceptionType.receiveTimeout:
-        return const ServerException(message: 'Server not responding');
+        return const ServerException(errorMessage: 'Server not responding');
 
       case DioExceptionType.badResponse:
         final Response<dynamic>? response = dio.response;
@@ -85,7 +85,7 @@ mixin ErrorHandling {
           return responseException(response);
         }
 
-        return const ServerException(message: 'Bad server response');
+        return const ServerException(errorMessage: 'Bad server response');
 
       default:
         return defaultException(dio.error, dio.stackTrace);
@@ -108,7 +108,7 @@ mixin ErrorHandling {
     ''');
 
     return ServerException(
-      message: error?.toString() ?? 'Unexpected error',
+      errorMessage: error?.toString() ?? 'Unexpected error',
     );
   }
 }

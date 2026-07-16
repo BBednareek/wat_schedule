@@ -1,68 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wat_schedule/core/constants/departements.dart';
+import 'package:wat_schedule/core/constants/app_routes.dart';
+import 'package:wat_schedule/core/constants/departments.dart';
 import 'package:wat_schedule/core/di/injectable.dart';
-import 'package:wat_schedule/features/choose_departement/presentation/screens/choose_departement.dart';
+import 'package:wat_schedule/features/choose_department/presentation/screens/choose_department_screen.dart';
 import 'package:wat_schedule/features/get_faculty_groups/presentation/bloc/faculty_groups_bloc.dart';
-import 'package:wat_schedule/features/get_faculty_groups/presentation/screens/get_faculty_group_screen.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/get_weekly_schedule_bloc.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/presentation/screen/get_weekly_schedule_screen.dart';
+import 'package:wat_schedule/features/get_faculty_groups/presentation/screens/faculty_groups_screen.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/bloc/weekly_schedule_bloc.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/presentation/screens/weekly_schedule_screen.dart';
+import 'package:wat_schedule/features/search_faculty_group/presentation/bloc/faculty_group_search_bloc.dart';
 
-GoRouter createAppRouter({required GetWeeklyScheduleBloc weeklyScheduleBloc}) {
+GoRouter createAppRouter({required WeeklyScheduleBloc weeklyScheduleBloc}) {
   return GoRouter(
     initialLocation: weeklyScheduleBloc.state.groupName.isNotEmpty
-        ? '/display-schedule'
-        : '/choose-department',
+        ? AppRoutes.weeklySchedule
+        : AppRoutes.chooseDepartment,
     routes: [
-      simpleRoute(
-          path: '/choose-department',
-          builder: (context, state) => const ChooseDepartement()),
-      simpleRoute(
-          path: '/choose-faculty-group',
+      _materialRoute(
+          path: AppRoutes.chooseDepartment,
+          builder: (context, state) => const ChooseDepartmentScreen()),
+      _materialRoute(
+          path: AppRoutes.chooseFacultyGroup,
           builder: (context, state) {
             final Department? department = state.extra as Department?;
 
             if (department == null || department.code.isEmpty)
-              return const ChooseDepartement();
+              return const ChooseDepartmentScreen();
 
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) =>
-                      FacultyGroupsBloc(facultyGroupsUsecase: locator())
-                        ..add(FacultyGroupsEvent.getFacultyGroups(
-                            department: department.code)),
+                  create: (_) => locator<FacultyGroupsBloc>()
+                    ..add(
+                      FacultyGroupsEvent.load(department: department.code),
+                    ),
                 ),
-                BlocProvider.value(value: weeklyScheduleBloc)
+                BlocProvider(create: (_) => FacultyGroupSearchBloc()),
+                BlocProvider.value(value: weeklyScheduleBloc),
               ],
-              child: GetFacultyGroupScreen(
+              child: FacultyGroupsScreen(
                 department: department,
               ),
             );
           }),
-      simpleRoute(
-        path: '/display-schedule',
+      _materialRoute(
+        path: AppRoutes.weeklySchedule,
         builder: (context, state) => BlocProvider.value(
           value: weeklyScheduleBloc,
-          child: const GetWeeklyScheduleScreen(),
+          child: const WeeklyScheduleScreen(),
         ),
       ),
     ],
   );
 }
 
-GoRoute simpleRoute({
-  // The path for the route
+GoRoute _materialRoute({
   required String path,
-  // The builder function that returns the widget for the route
   required Widget Function(BuildContext, GoRouterState) builder,
 }) =>
-// This function creates a simple route with the given path and builder
     GoRoute(
       path: path,
       pageBuilder: (context, state) =>
-          // Using pageBuilder to create a MaterialPage
-          // This allows for better navigation transitions and state management
           MaterialPage(key: state.pageKey, child: builder(context, state)),
     );

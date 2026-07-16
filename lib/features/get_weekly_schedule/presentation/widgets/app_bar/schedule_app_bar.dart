@@ -13,25 +13,15 @@ class ScheduleAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       automaticallyImplyLeading: false,
-      flexibleSpace: SafeArea(
+      flexibleSpace: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const ScheduleAppBarTitle(),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Align(
-                    alignment: AlignmentGeometry.centerEnd,
-                    child: SizedBox(
-                      width: MediaQuery.widthOf(context) * 0.26,
-                    ),
-                  ),
-                  const ScheduleWeekRange(),
-                ],
-              ),
+              ScheduleAppBarTitle(),
+              SizedBox(height: 4),
+              Center(child: ScheduleWeekRange()),
             ],
           ),
         ),

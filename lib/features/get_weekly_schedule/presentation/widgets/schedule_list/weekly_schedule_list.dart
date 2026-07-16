@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wat_schedule/features/get_weekly_schedule/domain/entites/daily_schedule_entity.dart';
+import 'package:wat_schedule/features/get_weekly_schedule/domain/entities/day_schedule_entity.dart';
 import 'package:wat_schedule/features/get_weekly_schedule/presentation/widgets/schedule_list/schedule_day_card.dart';
 
 class WeeklyScheduleList extends StatelessWidget {

@@ -1,62 +1,48 @@
 import 'package:flutter/material.dart';
 
 class ThemeEntity {
-  final ThemeMode theme;
+  final ThemeMode themeMode;
   final bool isDark;
   final bool isSystem;
 
   const ThemeEntity({
-    required this.theme,
+    required this.themeMode,
     required this.isDark,
     required this.isSystem,
   });
 
   const ThemeEntity.system()
-      : theme = ThemeMode.system,
+      : themeMode = ThemeMode.system,
         isDark = false,
         isSystem = true;
 
   const ThemeEntity.light()
-      : theme = ThemeMode.light,
+      : themeMode = ThemeMode.light,
         isDark = false,
         isSystem = false;
 
   const ThemeEntity.dark()
-      : theme = ThemeMode.dark,
+      : themeMode = ThemeMode.dark,
         isDark = true,
         isSystem = false;
 
-  ThemeEntity copyWith({
-    ThemeMode? theme,
-    bool? isDark,
-    bool? isSystem,
-  }) {
-    return ThemeEntity(
-      theme: theme ?? this.theme,
-      isDark: isDark ?? this.isDark,
-      isSystem: isSystem ?? this.isSystem,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'theme': theme.index,
-      'isDark': isDark,
-      'isSystem': isSystem,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        'theme': themeMode.index,
+        'isDark': isDark,
+        'isSystem': isSystem,
+      };
 
   factory ThemeEntity.fromJson(Map<String, dynamic> json) {
-    final int themeIndex = json['theme'] as int? ?? ThemeMode.system.index;
-    final ThemeMode theme =
-        themeIndex >= 0 && themeIndex < ThemeMode.values.length
-            ? ThemeMode.values[themeIndex]
+    final int themeModeIndex = json['theme'] as int? ?? ThemeMode.system.index;
+    final ThemeMode themeMode =
+        themeModeIndex >= 0 && themeModeIndex < ThemeMode.values.length
+            ? ThemeMode.values[themeModeIndex]
             : ThemeMode.system;
 
     return ThemeEntity(
-      theme: theme,
-      isDark: json['isDark'] as bool? ?? theme == ThemeMode.dark,
-      isSystem: json['isSystem'] as bool? ?? theme == ThemeMode.system,
+      themeMode: themeMode,
+      isDark: json['isDark'] as bool? ?? themeMode == ThemeMode.dark,
+      isSystem: json['isSystem'] as bool? ?? themeMode == ThemeMode.system,
     );
   }
 }

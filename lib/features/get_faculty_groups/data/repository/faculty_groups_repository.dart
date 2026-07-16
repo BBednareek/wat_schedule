@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:wat_schedule/core/network/error/failures.dart';
-import 'package:wat_schedule/features/get_faculty_groups/data/datasource/faculty_groups_datasource.dart';
+import 'package:wat_schedule/features/get_faculty_groups/data/datasource/faculty_groups_remote_data_source.dart';
 import 'package:wat_schedule/features/get_faculty_groups/domain/entity/faculty_groups_entity.dart';
 
 abstract class FacultyGroupsRepository {
@@ -15,9 +15,9 @@ abstract class FacultyGroupsRepository {
 /// and provides the actual implementation for fetching faculty groups from the remote data source.
 @LazySingleton(as: FacultyGroupsRepository)
 class FacultyGroupsRepositoryImpl implements FacultyGroupsRepository {
-  final FacultyGroupsRemoteDatasource facultyGroupsRemoteDatasource;
+  final FacultyGroupsRemoteDataSource facultyGroupsRemoteDataSource;
 
-  FacultyGroupsRepositoryImpl({required this.facultyGroupsRemoteDatasource});
+  FacultyGroupsRepositoryImpl({required this.facultyGroupsRemoteDataSource});
 
   /// Fetches the faculty groups from the remote data source.
   /// Returns an [Either] type where the left side is a [Failure] in case of an error,
@@ -29,7 +29,7 @@ class FacultyGroupsRepositoryImpl implements FacultyGroupsRepository {
       {required String department}) async {
     try {
       final FacultyGroupsEntity result =
-          await facultyGroupsRemoteDatasource.getFacultyGroups(
+          await facultyGroupsRemoteDataSource.getFacultyGroups(
         department: department,
       );
       return Right(result);
